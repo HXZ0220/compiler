@@ -1,0 +1,3130 @@
+Terminals unused in grammar
+
+    ERROR
+    LOWER_THAN_ASIGN
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: CompMod MainMod
+    2        | MainMod
+
+    3 CompMod: CompMod Decl
+    4        | CompMod FuncDef
+    5        | Decl
+    6        | FuncDef
+
+    7 MainMod: MainDef
+
+    8 BType: INT
+    9      | FLOAT
+
+   10 Decl: ConstDecl
+   11     | VarDecl
+   12     | FuncDecl
+
+   13 FuncDecl: BType IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   14         | VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID IDENT LPARENTHESIS RPARENTHESIS SEMICOLON
+   16         | BType IDENT LPARENTHESIS RPARENTHESIS SEMICOLON
+
+   17 ConstDecl: CONST BType ConstDefList SEMICOLON
+
+   18 ConstDefList: ConstDef
+   19             | ConstDefList COMMA ConstDef
+
+   20 ConstDef: IDENT ConstList ASSIGN ConstInit
+
+   21 ConstList: ε
+   22          | ConstList LBRACKET ConstExp RBRACKET
+
+   23 ConstInit: ConstExp
+   24          | LBRACE ConstInitList RBRACE
+   25          | LBRACE RBRACE
+
+   26 ConstInitList: ConstInit
+   27              | ConstInitList COMMA ConstInit
+
+   28 ConstExp: Add_Expr
+
+   29 VarDecl: BType VarDeclList SEMICOLON
+
+   30 VarDeclList: VarDef
+   31            | VarDeclList COMMA VarDef
+
+   32 VarDef: IDENT ConstList
+   33       | IDENT ConstList ASSIGN InitVal
+
+   34 InitVal: Expr
+   35        | LBRACE InitValList RBRACE
+   36        | LBRACE RBRACE
+
+   37 InitValList: InitVal
+   38            | InitValList COMMA InitVal
+
+   39 FuncDef: BType IDENT LPARENTHESIS RPARENTHESIS Body
+   40        | VOID IDENT LPARENTHESIS RPARENTHESIS Body
+   41        | BType IDENT LPARENTHESIS FuncParams RPARENTHESIS Body
+   42        | VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS Body
+
+   43 MainDef: INT MAIN LPARENTHESIS RPARENTHESIS Body
+   44        | INT MAIN LPARENTHESIS VOID RPARENTHESIS Body
+
+   45 FuncParams: FuncParam
+   46           | FuncParams COMMA FuncParam
+   47           | VOID
+
+   48 FuncParam: BType IDENT
+   49          | BType IDENT LBRACKET RBRACKET ExpList
+
+   50 ExpList: ε
+   51        | ExpList LBRACKET Expr RBRACKET
+
+   52 Body: LBRACE BodyList RBRACE
+
+   53 BodyList: ε
+   54         | BodyList BodyItem
+
+   55 BodyItem: Decl
+   56         | stmt
+
+   57 stmt: LVal ASSIGN Expr SEMICOLON
+   58     | LVal ADASS Expr SEMICOLON
+   59     | LVal SUASS Expr SEMICOLON
+   60     | LVal MUASS Expr SEMICOLON
+   61     | LVal DIASS Expr SEMICOLON
+   62     | Expr SEMICOLON
+   63     | Body
+   64     | IFItem
+   65     | WhileItem
+   66     | jump_stmt
+   67     | Forstmt
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON ForCond SEMICOLON ForIncr RPARENTHESIS stmt
+
+   69 ForInit: Expr
+   70        | ε
+
+   71 ForCond: Cond
+   72        | ε
+
+   73 ForIncr: Expr
+   74        | ε
+
+   75 IFItem: IF LPARENTHESIS Cond RPARENTHESIS stmt
+   76       | IF LPARENTHESIS Cond RPARENTHESIS stmt ELSE stmt
+
+   77 WhileItem: WHILE LPARENTHESIS Cond RPARENTHESIS stmt
+
+   78 jump_stmt: RETURN Expr SEMICOLON
+   79          | RETURN SEMICOLON
+   80          | BREAK SEMICOLON
+   81          | CONTINUE SEMICOLON
+
+   82 Expr: Add_Expr
+
+   83 Cond: OR_Expr
+
+   84 LVal: IDENT ExpList
+
+   85 Primary_Expr: LPARENTHESIS Expr RPARENTHESIS
+   86             | LVal
+   87             | Number
+
+   88 Number: Integer
+   89       | Floatnum
+
+   90 Unary_Expr: Primary_Expr
+   91           | Func_Expr
+   92           | ADD Unary_Expr
+   93           | SUB Unary_Expr
+   94           | NOT Unary_Expr
+
+   95 Func_Expr: IDENT LPARENTHESIS FuncRParams RPARENTHESIS
+   96          | IDENT LPARENTHESIS RPARENTHESIS
+
+   97 FuncRParams: Expr
+   98            | FuncRParams COMMA Expr
+
+   99 MDM_Expr: Unary_Expr
+  100         | MDM_Expr MUL Unary_Expr
+  101         | MDM_Expr DIV Unary_Expr
+  102         | MDM_Expr MOD Unary_Expr
+
+  103 Add_Expr: MDM_Expr
+  104         | Add_Expr ADD MDM_Expr
+  105         | Add_Expr SUB MDM_Expr
+
+  106 Rel_Expr: Add_Expr
+  107         | Rel_Expr LT Add_Expr
+  108         | Rel_Expr LET Add_Expr
+  109         | Rel_Expr GT Add_Expr
+  110         | Rel_Expr GET Add_Expr
+
+  111 Eq_Expr: Rel_Expr
+  112        | Eq_Expr EQ Rel_Expr
+  113        | Eq_Expr NEQ Rel_Expr
+
+  114 And_expr: Eq_Expr
+  115         | And_expr AND Eq_Expr
+
+  116 OR_Expr: And_expr
+  117        | OR_Expr OR And_expr
+
+  118 Integer: INTCONST
+
+  119 Floatnum: FLOATCONST
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    LOWER_THAN_ELSE (258)
+    ERROR <node> (259)
+    ADD <node> (260) 92 104
+    SUB <node> (261) 93 105
+    MUL <node> (262) 100
+    DIV <node> (263) 101
+    MOD <node> (264) 102
+    ADASS <node> (265) 58
+    SUASS <node> (266) 59
+    MUASS <node> (267) 60
+    DIASS <node> (268) 61
+    LT <node> (269) 107
+    LET <node> (270) 108
+    GT <node> (271) 109
+    GET <node> (272) 110
+    EQ <node> (273) 112
+    NEQ <node> (274) 113
+    LPARENTHESIS <node> (275) 13 14 15 16 39 40 41 42 43 44 68 75 76 77 85 95 96
+    RPARENTHESIS <node> (276) 13 14 15 16 39 40 41 42 43 44 68 75 76 77 85 95 96
+    LBRACKET <node> (277) 22 49 51
+    RBRACKET <node> (278) 22 49 51
+    LBRACE <node> (279) 24 25 35 36 52
+    RBRACE <node> (280) 24 25 35 36 52
+    ASSIGN <node> (281) 20 33 57
+    COMMA <node> (282) 19 27 31 38 46 98
+    SEMICOLON <node> (283) 13 14 15 16 17 29 57 58 59 60 61 62 68 78 79 80 81
+    NOT <node> (284) 94
+    AND <node> (285) 115
+    OR <node> (286) 117
+    INT <node> (287) 8 43 44
+    FLOAT <node> (288) 9
+    VOID <node> (289) 14 15 40 42 44 47
+    CONST <node> (290) 17
+    MAIN <node> (291) 43 44
+    IF <node> (292) 75 76
+    ELSE <node> (293) 76
+    WHILE <node> (294) 77
+    BREAK <node> (295) 80
+    CONTINUE <node> (296) 81
+    RETURN <node> (297) 78 79
+    FOR <node> (298) 68
+    IDENT <node> (299) 13 14 15 16 20 32 33 39 40 41 42 48 49 84 95 96
+    INTCONST <node> (300) 118
+    FLOATCONST <node> (301) 119
+    LOWER_THAN_ASIGN (302)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (48)
+        on left: 0
+    Program <node> (49)
+        on left: 1 2
+        on right: 0
+    CompMod <node> (50)
+        on left: 3 4 5 6
+        on right: 1 3 4
+    MainMod <node> (51)
+        on left: 7
+        on right: 1 2
+    BType <node> (52)
+        on left: 8 9
+        on right: 13 16 17 29 39 41 48 49
+    Decl <node> (53)
+        on left: 10 11 12
+        on right: 3 5 55
+    FuncDecl <node> (54)
+        on left: 13 14 15 16
+        on right: 12
+    ConstDecl <node> (55)
+        on left: 17
+        on right: 10
+    ConstDefList <node> (56)
+        on left: 18 19
+        on right: 17 19
+    ConstDef <node> (57)
+        on left: 20
+        on right: 18 19
+    ConstList <node> (58)
+        on left: 21 22
+        on right: 20 22 32 33
+    ConstInit <node> (59)
+        on left: 23 24 25
+        on right: 20 26 27
+    ConstInitList <node> (60)
+        on left: 26 27
+        on right: 24 27
+    ConstExp <node> (61)
+        on left: 28
+        on right: 22 23
+    VarDecl <node> (62)
+        on left: 29
+        on right: 11
+    VarDeclList <node> (63)
+        on left: 30 31
+        on right: 29 31
+    VarDef <node> (64)
+        on left: 32 33
+        on right: 30 31
+    InitVal <node> (65)
+        on left: 34 35 36
+        on right: 33 37 38
+    InitValList <node> (66)
+        on left: 37 38
+        on right: 35 38
+    FuncDef <node> (67)
+        on left: 39 40 41 42
+        on right: 4 6
+    MainDef <node> (68)
+        on left: 43 44
+        on right: 7
+    FuncParams <node> (69)
+        on left: 45 46 47
+        on right: 13 14 41 42 46
+    FuncParam <node> (70)
+        on left: 48 49
+        on right: 45 46
+    ExpList <node> (71)
+        on left: 50 51
+        on right: 49 51 84
+    Body <node> (72)
+        on left: 52
+        on right: 39 40 41 42 43 44 63
+    BodyList <node> (73)
+        on left: 53 54
+        on right: 52 54
+    BodyItem <node> (74)
+        on left: 55 56
+        on right: 54
+    stmt <node> (75)
+        on left: 57 58 59 60 61 62 63 64 65 66 67
+        on right: 56 68 75 76 77
+    Forstmt <node> (76)
+        on left: 68
+        on right: 67
+    ForInit <node> (77)
+        on left: 69 70
+        on right: 68
+    ForCond <node> (78)
+        on left: 71 72
+        on right: 68
+    ForIncr <node> (79)
+        on left: 73 74
+        on right: 68
+    IFItem <node> (80)
+        on left: 75 76
+        on right: 64
+    WhileItem <node> (81)
+        on left: 77
+        on right: 65
+    jump_stmt <node> (82)
+        on left: 78 79 80 81
+        on right: 66
+    Expr <node> (83)
+        on left: 82
+        on right: 34 51 57 58 59 60 61 62 69 73 78 85 97 98
+    Cond <node> (84)
+        on left: 83
+        on right: 71 75 76 77
+    LVal <node> (85)
+        on left: 84
+        on right: 57 58 59 60 61 86
+    Primary_Expr <node> (86)
+        on left: 85 86 87
+        on right: 90
+    Number <node> (87)
+        on left: 88 89
+        on right: 87
+    Unary_Expr <node> (88)
+        on left: 90 91 92 93 94
+        on right: 92 93 94 99 100 101 102
+    Func_Expr <node> (89)
+        on left: 95 96
+        on right: 91
+    FuncRParams <node> (90)
+        on left: 97 98
+        on right: 95 98
+    MDM_Expr <node> (91)
+        on left: 99 100 101 102
+        on right: 100 101 102 103 104 105
+    Add_Expr <node> (92)
+        on left: 103 104 105
+        on right: 28 82 104 105 106 107 108 109 110
+    Rel_Expr <node> (93)
+        on left: 106 107 108 109 110
+        on right: 107 108 109 110 111 112 113
+    Eq_Expr <node> (94)
+        on left: 111 112 113
+        on right: 112 113 114 115
+    And_expr <node> (95)
+        on left: 114 115
+        on right: 115 116 117
+    OR_Expr <node> (96)
+        on left: 116 117
+        on right: 83 117
+    Integer <node> (97)
+        on left: 118
+        on right: 88
+    Floatnum <node> (98)
+        on left: 119
+        on right: 89
+
+
+State 0
+
+    0 $accept: • Program $end
+
+    INT    shift, and go to state 1
+    FLOAT  shift, and go to state 2
+    VOID   shift, and go to state 3
+    CONST  shift, and go to state 4
+
+    Program    go to state 5
+    CompMod    go to state 6
+    MainMod    go to state 7
+    BType      go to state 8
+    Decl       go to state 9
+    FuncDecl   go to state 10
+    ConstDecl  go to state 11
+    VarDecl    go to state 12
+    FuncDef    go to state 13
+    MainDef    go to state 14
+
+
+State 1
+
+    8 BType: INT •
+   43 MainDef: INT • MAIN LPARENTHESIS RPARENTHESIS Body
+   44        | INT • MAIN LPARENTHESIS VOID RPARENTHESIS Body
+
+    MAIN  shift, and go to state 15
+
+    $default  reduce using rule 8 (BType)
+
+
+State 2
+
+    9 BType: FLOAT •
+
+    $default  reduce using rule 9 (BType)
+
+
+State 3
+
+   14 FuncDecl: VOID • IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID • IDENT LPARENTHESIS RPARENTHESIS SEMICOLON
+   40 FuncDef: VOID • IDENT LPARENTHESIS RPARENTHESIS Body
+   42        | VOID • IDENT LPARENTHESIS FuncParams RPARENTHESIS Body
+
+    IDENT  shift, and go to state 16
+
+
+State 4
+
+   17 ConstDecl: CONST • BType ConstDefList SEMICOLON
+
+    INT    shift, and go to state 17
+    FLOAT  shift, and go to state 2
+
+    BType  go to state 18
+
+
+State 5
+
+    0 $accept: Program • $end
+
+    $end  shift, and go to state 19
+
+
+State 6
+
+    1 Program: CompMod • MainMod
+    3 CompMod: CompMod • Decl
+    4        | CompMod • FuncDef
+
+    INT    shift, and go to state 1
+    FLOAT  shift, and go to state 2
+    VOID   shift, and go to state 3
+    CONST  shift, and go to state 4
+
+    MainMod    go to state 20
+    BType      go to state 8
+    Decl       go to state 21
+    FuncDecl   go to state 10
+    ConstDecl  go to state 11
+    VarDecl    go to state 12
+    FuncDef    go to state 22
+    MainDef    go to state 14
+
+
+State 7
+
+    2 Program: MainMod •
+
+    $default  reduce using rule 2 (Program)
+
+
+State 8
+
+   13 FuncDecl: BType • IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   16         | BType • IDENT LPARENTHESIS RPARENTHESIS SEMICOLON
+   29 VarDecl: BType • VarDeclList SEMICOLON
+   39 FuncDef: BType • IDENT LPARENTHESIS RPARENTHESIS Body
+   41        | BType • IDENT LPARENTHESIS FuncParams RPARENTHESIS Body
+
+    IDENT  shift, and go to state 23
+
+    VarDeclList  go to state 24
+    VarDef       go to state 25
+
+
+State 9
+
+    5 CompMod: Decl •
+
+    $default  reduce using rule 5 (CompMod)
+
+
+State 10
+
+   12 Decl: FuncDecl •
+
+    $default  reduce using rule 12 (Decl)
+
+
+State 11
+
+   10 Decl: ConstDecl •
+
+    $default  reduce using rule 10 (Decl)
+
+
+State 12
+
+   11 Decl: VarDecl •
+
+    $default  reduce using rule 11 (Decl)
+
+
+State 13
+
+    6 CompMod: FuncDef •
+
+    $default  reduce using rule 6 (CompMod)
+
+
+State 14
+
+    7 MainMod: MainDef •
+
+    $default  reduce using rule 7 (MainMod)
+
+
+State 15
+
+   43 MainDef: INT MAIN • LPARENTHESIS RPARENTHESIS Body
+   44        | INT MAIN • LPARENTHESIS VOID RPARENTHESIS Body
+
+    LPARENTHESIS  shift, and go to state 26
+
+
+State 16
+
+   14 FuncDecl: VOID IDENT • LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID IDENT • LPARENTHESIS RPARENTHESIS SEMICOLON
+   40 FuncDef: VOID IDENT • LPARENTHESIS RPARENTHESIS Body
+   42        | VOID IDENT • LPARENTHESIS FuncParams RPARENTHESIS Body
+
+    LPARENTHESIS  shift, and go to state 27
+
+
+State 17
+
+    8 BType: INT •
+
+    $default  reduce using rule 8 (BType)
+
+
+State 18
+
+   17 ConstDecl: CONST BType • ConstDefList SEMICOLON
+
+    IDENT  shift, and go to state 28
+
+    ConstDefList  go to state 29
+    ConstDef      go to state 30
+
+
+State 19
+
+    0 $accept: Program $end •
+
+    $default  accept
+
+
+State 20
+
+    1 Program: CompMod MainMod •
+
+    $default  reduce using rule 1 (Program)
+
+
+State 21
+
+    3 CompMod: CompMod Decl •
+
+    $default  reduce using rule 3 (CompMod)
+
+
+State 22
+
+    4 CompMod: CompMod FuncDef •
+
+    $default  reduce using rule 4 (CompMod)
+
+
+State 23
+
+   13 FuncDecl: BType IDENT • LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   16         | BType IDENT • LPARENTHESIS RPARENTHESIS SEMICOLON
+   32 VarDef: IDENT • ConstList
+   33       | IDENT • ConstList ASSIGN InitVal
+   39 FuncDef: BType IDENT • LPARENTHESIS RPARENTHESIS Body
+   41        | BType IDENT • LPARENTHESIS FuncParams RPARENTHESIS Body
+
+    LPARENTHESIS  shift, and go to state 31
+
+    $default  reduce using rule 21 (ConstList)
+
+    ConstList  go to state 32
+
+
+State 24
+
+   29 VarDecl: BType VarDeclList • SEMICOLON
+   31 VarDeclList: VarDeclList • COMMA VarDef
+
+    COMMA      shift, and go to state 33
+    SEMICOLON  shift, and go to state 34
+
+
+State 25
+
+   30 VarDeclList: VarDef •
+
+    $default  reduce using rule 30 (VarDeclList)
+
+
+State 26
+
+   43 MainDef: INT MAIN LPARENTHESIS • RPARENTHESIS Body
+   44        | INT MAIN LPARENTHESIS • VOID RPARENTHESIS Body
+
+    RPARENTHESIS  shift, and go to state 35
+    VOID          shift, and go to state 36
+
+
+State 27
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS • FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID IDENT LPARENTHESIS • RPARENTHESIS SEMICOLON
+   40 FuncDef: VOID IDENT LPARENTHESIS • RPARENTHESIS Body
+   42        | VOID IDENT LPARENTHESIS • FuncParams RPARENTHESIS Body
+
+    RPARENTHESIS  shift, and go to state 37
+    INT           shift, and go to state 17
+    FLOAT         shift, and go to state 2
+    VOID          shift, and go to state 38
+
+    BType       go to state 39
+    FuncParams  go to state 40
+    FuncParam   go to state 41
+
+
+State 28
+
+   20 ConstDef: IDENT • ConstList ASSIGN ConstInit
+
+    $default  reduce using rule 21 (ConstList)
+
+    ConstList  go to state 42
+
+
+State 29
+
+   17 ConstDecl: CONST BType ConstDefList • SEMICOLON
+   19 ConstDefList: ConstDefList • COMMA ConstDef
+
+    COMMA      shift, and go to state 43
+    SEMICOLON  shift, and go to state 44
+
+
+State 30
+
+   18 ConstDefList: ConstDef •
+
+    $default  reduce using rule 18 (ConstDefList)
+
+
+State 31
+
+   13 FuncDecl: BType IDENT LPARENTHESIS • FuncParams RPARENTHESIS SEMICOLON
+   16         | BType IDENT LPARENTHESIS • RPARENTHESIS SEMICOLON
+   39 FuncDef: BType IDENT LPARENTHESIS • RPARENTHESIS Body
+   41        | BType IDENT LPARENTHESIS • FuncParams RPARENTHESIS Body
+
+    RPARENTHESIS  shift, and go to state 45
+    INT           shift, and go to state 17
+    FLOAT         shift, and go to state 2
+    VOID          shift, and go to state 38
+
+    BType       go to state 39
+    FuncParams  go to state 46
+    FuncParam   go to state 41
+
+
+State 32
+
+   22 ConstList: ConstList • LBRACKET ConstExp RBRACKET
+   32 VarDef: IDENT ConstList •
+   33       | IDENT ConstList • ASSIGN InitVal
+
+    LBRACKET  shift, and go to state 47
+    ASSIGN    shift, and go to state 48
+
+    $default  reduce using rule 32 (VarDef)
+
+
+State 33
+
+   31 VarDeclList: VarDeclList COMMA • VarDef
+
+    IDENT  shift, and go to state 49
+
+    VarDef  go to state 50
+
+
+State 34
+
+   29 VarDecl: BType VarDeclList SEMICOLON •
+
+    $default  reduce using rule 29 (VarDecl)
+
+
+State 35
+
+   43 MainDef: INT MAIN LPARENTHESIS RPARENTHESIS • Body
+
+    LBRACE  shift, and go to state 51
+
+    Body  go to state 52
+
+
+State 36
+
+   44 MainDef: INT MAIN LPARENTHESIS VOID • RPARENTHESIS Body
+
+    RPARENTHESIS  shift, and go to state 53
+
+
+State 37
+
+   15 FuncDecl: VOID IDENT LPARENTHESIS RPARENTHESIS • SEMICOLON
+   40 FuncDef: VOID IDENT LPARENTHESIS RPARENTHESIS • Body
+
+    LBRACE     shift, and go to state 51
+    SEMICOLON  shift, and go to state 54
+
+    Body  go to state 55
+
+
+State 38
+
+   47 FuncParams: VOID •
+
+    $default  reduce using rule 47 (FuncParams)
+
+
+State 39
+
+   48 FuncParam: BType • IDENT
+   49          | BType • IDENT LBRACKET RBRACKET ExpList
+
+    IDENT  shift, and go to state 56
+
+
+State 40
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS FuncParams • RPARENTHESIS SEMICOLON
+   42 FuncDef: VOID IDENT LPARENTHESIS FuncParams • RPARENTHESIS Body
+   46 FuncParams: FuncParams • COMMA FuncParam
+
+    RPARENTHESIS  shift, and go to state 57
+    COMMA         shift, and go to state 58
+
+
+State 41
+
+   45 FuncParams: FuncParam •
+
+    $default  reduce using rule 45 (FuncParams)
+
+
+State 42
+
+   20 ConstDef: IDENT ConstList • ASSIGN ConstInit
+   22 ConstList: ConstList • LBRACKET ConstExp RBRACKET
+
+    LBRACKET  shift, and go to state 47
+    ASSIGN    shift, and go to state 59
+
+
+State 43
+
+   19 ConstDefList: ConstDefList COMMA • ConstDef
+
+    IDENT  shift, and go to state 28
+
+    ConstDef  go to state 60
+
+
+State 44
+
+   17 ConstDecl: CONST BType ConstDefList SEMICOLON •
+
+    $default  reduce using rule 17 (ConstDecl)
+
+
+State 45
+
+   16 FuncDecl: BType IDENT LPARENTHESIS RPARENTHESIS • SEMICOLON
+   39 FuncDef: BType IDENT LPARENTHESIS RPARENTHESIS • Body
+
+    LBRACE     shift, and go to state 51
+    SEMICOLON  shift, and go to state 61
+
+    Body  go to state 62
+
+
+State 46
+
+   13 FuncDecl: BType IDENT LPARENTHESIS FuncParams • RPARENTHESIS SEMICOLON
+   41 FuncDef: BType IDENT LPARENTHESIS FuncParams • RPARENTHESIS Body
+   46 FuncParams: FuncParams • COMMA FuncParam
+
+    RPARENTHESIS  shift, and go to state 63
+    COMMA         shift, and go to state 58
+
+
+State 47
+
+   22 ConstList: ConstList LBRACKET • ConstExp RBRACKET
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    ConstExp      go to state 71
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 78
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 48
+
+   33 VarDef: IDENT ConstList ASSIGN • InitVal
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 81
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    InitVal       go to state 82
+    Expr          go to state 83
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 49
+
+   32 VarDef: IDENT • ConstList
+   33       | IDENT • ConstList ASSIGN InitVal
+
+    $default  reduce using rule 21 (ConstList)
+
+    ConstList  go to state 32
+
+
+State 50
+
+   31 VarDeclList: VarDeclList COMMA VarDef •
+
+    $default  reduce using rule 31 (VarDeclList)
+
+
+State 51
+
+   52 Body: LBRACE • BodyList RBRACE
+
+    $default  reduce using rule 53 (BodyList)
+
+    BodyList  go to state 85
+
+
+State 52
+
+   43 MainDef: INT MAIN LPARENTHESIS RPARENTHESIS Body •
+
+    $default  reduce using rule 43 (MainDef)
+
+
+State 53
+
+   44 MainDef: INT MAIN LPARENTHESIS VOID RPARENTHESIS • Body
+
+    LBRACE  shift, and go to state 51
+
+    Body  go to state 86
+
+
+State 54
+
+   15 FuncDecl: VOID IDENT LPARENTHESIS RPARENTHESIS SEMICOLON •
+
+    $default  reduce using rule 15 (FuncDecl)
+
+
+State 55
+
+   40 FuncDef: VOID IDENT LPARENTHESIS RPARENTHESIS Body •
+
+    $default  reduce using rule 40 (FuncDef)
+
+
+State 56
+
+   48 FuncParam: BType IDENT •
+   49          | BType IDENT • LBRACKET RBRACKET ExpList
+
+    LBRACKET  shift, and go to state 87
+
+    $default  reduce using rule 48 (FuncParam)
+
+
+State 57
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS • SEMICOLON
+   42 FuncDef: VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS • Body
+
+    LBRACE     shift, and go to state 51
+    SEMICOLON  shift, and go to state 88
+
+    Body  go to state 89
+
+
+State 58
+
+   46 FuncParams: FuncParams COMMA • FuncParam
+
+    INT    shift, and go to state 17
+    FLOAT  shift, and go to state 2
+
+    BType      go to state 39
+    FuncParam  go to state 90
+
+
+State 59
+
+   20 ConstDef: IDENT ConstList ASSIGN • ConstInit
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 91
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    ConstInit     go to state 92
+    ConstExp      go to state 93
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 78
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 60
+
+   19 ConstDefList: ConstDefList COMMA ConstDef •
+
+    $default  reduce using rule 19 (ConstDefList)
+
+
+State 61
+
+   16 FuncDecl: BType IDENT LPARENTHESIS RPARENTHESIS SEMICOLON •
+
+    $default  reduce using rule 16 (FuncDecl)
+
+
+State 62
+
+   39 FuncDef: BType IDENT LPARENTHESIS RPARENTHESIS Body •
+
+    $default  reduce using rule 39 (FuncDef)
+
+
+State 63
+
+   13 FuncDecl: BType IDENT LPARENTHESIS FuncParams RPARENTHESIS • SEMICOLON
+   41 FuncDef: BType IDENT LPARENTHESIS FuncParams RPARENTHESIS • Body
+
+    LBRACE     shift, and go to state 51
+    SEMICOLON  shift, and go to state 94
+
+    Body  go to state 95
+
+
+State 64
+
+   92 Unary_Expr: ADD • Unary_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 96
+    Func_Expr     go to state 76
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 65
+
+   93 Unary_Expr: SUB • Unary_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 97
+    Func_Expr     go to state 76
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 66
+
+   85 Primary_Expr: LPARENTHESIS • Expr RPARENTHESIS
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 98
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 67
+
+   94 Unary_Expr: NOT • Unary_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 99
+    Func_Expr     go to state 76
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 68
+
+   84 LVal: IDENT • ExpList
+   95 Func_Expr: IDENT • LPARENTHESIS FuncRParams RPARENTHESIS
+   96          | IDENT • LPARENTHESIS RPARENTHESIS
+
+    LPARENTHESIS  shift, and go to state 100
+
+    $default  reduce using rule 50 (ExpList)
+
+    ExpList  go to state 101
+
+
+State 69
+
+  118 Integer: INTCONST •
+
+    $default  reduce using rule 118 (Integer)
+
+
+State 70
+
+  119 Floatnum: FLOATCONST •
+
+    $default  reduce using rule 119 (Floatnum)
+
+
+State 71
+
+   22 ConstList: ConstList LBRACKET ConstExp • RBRACKET
+
+    RBRACKET  shift, and go to state 102
+
+
+State 72
+
+   86 Primary_Expr: LVal •
+
+    $default  reduce using rule 86 (Primary_Expr)
+
+
+State 73
+
+   90 Unary_Expr: Primary_Expr •
+
+    $default  reduce using rule 90 (Unary_Expr)
+
+
+State 74
+
+   87 Primary_Expr: Number •
+
+    $default  reduce using rule 87 (Primary_Expr)
+
+
+State 75
+
+   99 MDM_Expr: Unary_Expr •
+
+    $default  reduce using rule 99 (MDM_Expr)
+
+
+State 76
+
+   91 Unary_Expr: Func_Expr •
+
+    $default  reduce using rule 91 (Unary_Expr)
+
+
+State 77
+
+  100 MDM_Expr: MDM_Expr • MUL Unary_Expr
+  101         | MDM_Expr • DIV Unary_Expr
+  102         | MDM_Expr • MOD Unary_Expr
+  103 Add_Expr: MDM_Expr •
+
+    MUL  shift, and go to state 103
+    DIV  shift, and go to state 104
+    MOD  shift, and go to state 105
+
+    $default  reduce using rule 103 (Add_Expr)
+
+
+State 78
+
+   28 ConstExp: Add_Expr •
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 28 (ConstExp)
+
+
+State 79
+
+   88 Number: Integer •
+
+    $default  reduce using rule 88 (Number)
+
+
+State 80
+
+   89 Number: Floatnum •
+
+    $default  reduce using rule 89 (Number)
+
+
+State 81
+
+   35 InitVal: LBRACE • InitValList RBRACE
+   36        | LBRACE • RBRACE
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 81
+    RBRACE        shift, and go to state 108
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    InitVal       go to state 109
+    InitValList   go to state 110
+    Expr          go to state 83
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 82
+
+   33 VarDef: IDENT ConstList ASSIGN InitVal •
+
+    $default  reduce using rule 33 (VarDef)
+
+
+State 83
+
+   34 InitVal: Expr •
+
+    $default  reduce using rule 34 (InitVal)
+
+
+State 84
+
+   82 Expr: Add_Expr •
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 82 (Expr)
+
+
+State 85
+
+   52 Body: LBRACE BodyList • RBRACE
+   54 BodyList: BodyList • BodyItem
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 51
+    RBRACE        shift, and go to state 111
+    NOT           shift, and go to state 67
+    INT           shift, and go to state 17
+    FLOAT         shift, and go to state 2
+    VOID          shift, and go to state 112
+    CONST         shift, and go to state 4
+    IF            shift, and go to state 113
+    WHILE         shift, and go to state 114
+    BREAK         shift, and go to state 115
+    CONTINUE      shift, and go to state 116
+    RETURN        shift, and go to state 117
+    FOR           shift, and go to state 118
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    BType         go to state 119
+    Decl          go to state 120
+    FuncDecl      go to state 10
+    ConstDecl     go to state 11
+    VarDecl       go to state 12
+    Body          go to state 121
+    BodyItem      go to state 122
+    stmt          go to state 123
+    Forstmt       go to state 124
+    IFItem        go to state 125
+    WhileItem     go to state 126
+    jump_stmt     go to state 127
+    Expr          go to state 128
+    LVal          go to state 129
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 86
+
+   44 MainDef: INT MAIN LPARENTHESIS VOID RPARENTHESIS Body •
+
+    $default  reduce using rule 44 (MainDef)
+
+
+State 87
+
+   49 FuncParam: BType IDENT LBRACKET • RBRACKET ExpList
+
+    RBRACKET  shift, and go to state 130
+
+
+State 88
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON •
+
+    $default  reduce using rule 14 (FuncDecl)
+
+
+State 89
+
+   42 FuncDef: VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS Body •
+
+    $default  reduce using rule 42 (FuncDef)
+
+
+State 90
+
+   46 FuncParams: FuncParams COMMA FuncParam •
+
+    $default  reduce using rule 46 (FuncParams)
+
+
+State 91
+
+   24 ConstInit: LBRACE • ConstInitList RBRACE
+   25          | LBRACE • RBRACE
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 91
+    RBRACE        shift, and go to state 131
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    ConstInit      go to state 132
+    ConstInitList  go to state 133
+    ConstExp       go to state 93
+    LVal           go to state 72
+    Primary_Expr   go to state 73
+    Number         go to state 74
+    Unary_Expr     go to state 75
+    Func_Expr      go to state 76
+    MDM_Expr       go to state 77
+    Add_Expr       go to state 78
+    Integer        go to state 79
+    Floatnum       go to state 80
+
+
+State 92
+
+   20 ConstDef: IDENT ConstList ASSIGN ConstInit •
+
+    $default  reduce using rule 20 (ConstDef)
+
+
+State 93
+
+   23 ConstInit: ConstExp •
+
+    $default  reduce using rule 23 (ConstInit)
+
+
+State 94
+
+   13 FuncDecl: BType IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON •
+
+    $default  reduce using rule 13 (FuncDecl)
+
+
+State 95
+
+   41 FuncDef: BType IDENT LPARENTHESIS FuncParams RPARENTHESIS Body •
+
+    $default  reduce using rule 41 (FuncDef)
+
+
+State 96
+
+   92 Unary_Expr: ADD Unary_Expr •
+
+    $default  reduce using rule 92 (Unary_Expr)
+
+
+State 97
+
+   93 Unary_Expr: SUB Unary_Expr •
+
+    $default  reduce using rule 93 (Unary_Expr)
+
+
+State 98
+
+   85 Primary_Expr: LPARENTHESIS Expr • RPARENTHESIS
+
+    RPARENTHESIS  shift, and go to state 134
+
+
+State 99
+
+   94 Unary_Expr: NOT Unary_Expr •
+
+    $default  reduce using rule 94 (Unary_Expr)
+
+
+State 100
+
+   95 Func_Expr: IDENT LPARENTHESIS • FuncRParams RPARENTHESIS
+   96          | IDENT LPARENTHESIS • RPARENTHESIS
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    RPARENTHESIS  shift, and go to state 135
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 136
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    FuncRParams   go to state 137
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 101
+
+   51 ExpList: ExpList • LBRACKET Expr RBRACKET
+   84 LVal: IDENT ExpList •
+
+    LBRACKET  shift, and go to state 138
+
+    $default  reduce using rule 84 (LVal)
+
+
+State 102
+
+   22 ConstList: ConstList LBRACKET ConstExp RBRACKET •
+
+    $default  reduce using rule 22 (ConstList)
+
+
+State 103
+
+  100 MDM_Expr: MDM_Expr MUL • Unary_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 139
+    Func_Expr     go to state 76
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 104
+
+  101 MDM_Expr: MDM_Expr DIV • Unary_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 140
+    Func_Expr     go to state 76
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 105
+
+  102 MDM_Expr: MDM_Expr MOD • Unary_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 141
+    Func_Expr     go to state 76
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 106
+
+  104 Add_Expr: Add_Expr ADD • MDM_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 142
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 107
+
+  105 Add_Expr: Add_Expr SUB • MDM_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 143
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 108
+
+   36 InitVal: LBRACE RBRACE •
+
+    $default  reduce using rule 36 (InitVal)
+
+
+State 109
+
+   37 InitValList: InitVal •
+
+    $default  reduce using rule 37 (InitValList)
+
+
+State 110
+
+   35 InitVal: LBRACE InitValList • RBRACE
+   38 InitValList: InitValList • COMMA InitVal
+
+    RBRACE  shift, and go to state 144
+    COMMA   shift, and go to state 145
+
+
+State 111
+
+   52 Body: LBRACE BodyList RBRACE •
+
+    $default  reduce using rule 52 (Body)
+
+
+State 112
+
+   14 FuncDecl: VOID • IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID • IDENT LPARENTHESIS RPARENTHESIS SEMICOLON
+
+    IDENT  shift, and go to state 146
+
+
+State 113
+
+   75 IFItem: IF • LPARENTHESIS Cond RPARENTHESIS stmt
+   76       | IF • LPARENTHESIS Cond RPARENTHESIS stmt ELSE stmt
+
+    LPARENTHESIS  shift, and go to state 147
+
+
+State 114
+
+   77 WhileItem: WHILE • LPARENTHESIS Cond RPARENTHESIS stmt
+
+    LPARENTHESIS  shift, and go to state 148
+
+
+State 115
+
+   80 jump_stmt: BREAK • SEMICOLON
+
+    SEMICOLON  shift, and go to state 149
+
+
+State 116
+
+   81 jump_stmt: CONTINUE • SEMICOLON
+
+    SEMICOLON  shift, and go to state 150
+
+
+State 117
+
+   78 jump_stmt: RETURN • Expr SEMICOLON
+   79          | RETURN • SEMICOLON
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    SEMICOLON     shift, and go to state 151
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 152
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 118
+
+   68 Forstmt: FOR • LPARENTHESIS ForInit SEMICOLON ForCond SEMICOLON ForIncr RPARENTHESIS stmt
+
+    LPARENTHESIS  shift, and go to state 153
+
+
+State 119
+
+   13 FuncDecl: BType • IDENT LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   16         | BType • IDENT LPARENTHESIS RPARENTHESIS SEMICOLON
+   29 VarDecl: BType • VarDeclList SEMICOLON
+
+    IDENT  shift, and go to state 154
+
+    VarDeclList  go to state 24
+    VarDef       go to state 25
+
+
+State 120
+
+   55 BodyItem: Decl •
+
+    $default  reduce using rule 55 (BodyItem)
+
+
+State 121
+
+   63 stmt: Body •
+
+    $default  reduce using rule 63 (stmt)
+
+
+State 122
+
+   54 BodyList: BodyList BodyItem •
+
+    $default  reduce using rule 54 (BodyList)
+
+
+State 123
+
+   56 BodyItem: stmt •
+
+    $default  reduce using rule 56 (BodyItem)
+
+
+State 124
+
+   67 stmt: Forstmt •
+
+    $default  reduce using rule 67 (stmt)
+
+
+State 125
+
+   64 stmt: IFItem •
+
+    $default  reduce using rule 64 (stmt)
+
+
+State 126
+
+   65 stmt: WhileItem •
+
+    $default  reduce using rule 65 (stmt)
+
+
+State 127
+
+   66 stmt: jump_stmt •
+
+    $default  reduce using rule 66 (stmt)
+
+
+State 128
+
+   62 stmt: Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 155
+
+
+State 129
+
+   57 stmt: LVal • ASSIGN Expr SEMICOLON
+   58     | LVal • ADASS Expr SEMICOLON
+   59     | LVal • SUASS Expr SEMICOLON
+   60     | LVal • MUASS Expr SEMICOLON
+   61     | LVal • DIASS Expr SEMICOLON
+   86 Primary_Expr: LVal •
+
+    ADASS   shift, and go to state 156
+    SUASS   shift, and go to state 157
+    MUASS   shift, and go to state 158
+    DIASS   shift, and go to state 159
+    ASSIGN  shift, and go to state 160
+
+    $default  reduce using rule 86 (Primary_Expr)
+
+
+State 130
+
+   49 FuncParam: BType IDENT LBRACKET RBRACKET • ExpList
+
+    $default  reduce using rule 50 (ExpList)
+
+    ExpList  go to state 161
+
+
+State 131
+
+   25 ConstInit: LBRACE RBRACE •
+
+    $default  reduce using rule 25 (ConstInit)
+
+
+State 132
+
+   26 ConstInitList: ConstInit •
+
+    $default  reduce using rule 26 (ConstInitList)
+
+
+State 133
+
+   24 ConstInit: LBRACE ConstInitList • RBRACE
+   27 ConstInitList: ConstInitList • COMMA ConstInit
+
+    RBRACE  shift, and go to state 162
+    COMMA   shift, and go to state 163
+
+
+State 134
+
+   85 Primary_Expr: LPARENTHESIS Expr RPARENTHESIS •
+
+    $default  reduce using rule 85 (Primary_Expr)
+
+
+State 135
+
+   96 Func_Expr: IDENT LPARENTHESIS RPARENTHESIS •
+
+    $default  reduce using rule 96 (Func_Expr)
+
+
+State 136
+
+   97 FuncRParams: Expr •
+
+    $default  reduce using rule 97 (FuncRParams)
+
+
+State 137
+
+   95 Func_Expr: IDENT LPARENTHESIS FuncRParams • RPARENTHESIS
+   98 FuncRParams: FuncRParams • COMMA Expr
+
+    RPARENTHESIS  shift, and go to state 164
+    COMMA         shift, and go to state 165
+
+
+State 138
+
+   51 ExpList: ExpList LBRACKET • Expr RBRACKET
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 166
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 139
+
+  100 MDM_Expr: MDM_Expr MUL Unary_Expr •
+
+    $default  reduce using rule 100 (MDM_Expr)
+
+
+State 140
+
+  101 MDM_Expr: MDM_Expr DIV Unary_Expr •
+
+    $default  reduce using rule 101 (MDM_Expr)
+
+
+State 141
+
+  102 MDM_Expr: MDM_Expr MOD Unary_Expr •
+
+    $default  reduce using rule 102 (MDM_Expr)
+
+
+State 142
+
+  100 MDM_Expr: MDM_Expr • MUL Unary_Expr
+  101         | MDM_Expr • DIV Unary_Expr
+  102         | MDM_Expr • MOD Unary_Expr
+  104 Add_Expr: Add_Expr ADD MDM_Expr •
+
+    MUL  shift, and go to state 103
+    DIV  shift, and go to state 104
+    MOD  shift, and go to state 105
+
+    $default  reduce using rule 104 (Add_Expr)
+
+
+State 143
+
+  100 MDM_Expr: MDM_Expr • MUL Unary_Expr
+  101         | MDM_Expr • DIV Unary_Expr
+  102         | MDM_Expr • MOD Unary_Expr
+  105 Add_Expr: Add_Expr SUB MDM_Expr •
+
+    MUL  shift, and go to state 103
+    DIV  shift, and go to state 104
+    MOD  shift, and go to state 105
+
+    $default  reduce using rule 105 (Add_Expr)
+
+
+State 144
+
+   35 InitVal: LBRACE InitValList RBRACE •
+
+    $default  reduce using rule 35 (InitVal)
+
+
+State 145
+
+   38 InitValList: InitValList COMMA • InitVal
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 81
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    InitVal       go to state 167
+    Expr          go to state 83
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 146
+
+   14 FuncDecl: VOID IDENT • LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID IDENT • LPARENTHESIS RPARENTHESIS SEMICOLON
+
+    LPARENTHESIS  shift, and go to state 168
+
+
+State 147
+
+   75 IFItem: IF LPARENTHESIS • Cond RPARENTHESIS stmt
+   76       | IF LPARENTHESIS • Cond RPARENTHESIS stmt ELSE stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Cond          go to state 169
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 171
+    Eq_Expr       go to state 172
+    And_expr      go to state 173
+    OR_Expr       go to state 174
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 148
+
+   77 WhileItem: WHILE LPARENTHESIS • Cond RPARENTHESIS stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Cond          go to state 175
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 171
+    Eq_Expr       go to state 172
+    And_expr      go to state 173
+    OR_Expr       go to state 174
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 149
+
+   80 jump_stmt: BREAK SEMICOLON •
+
+    $default  reduce using rule 80 (jump_stmt)
+
+
+State 150
+
+   81 jump_stmt: CONTINUE SEMICOLON •
+
+    $default  reduce using rule 81 (jump_stmt)
+
+
+State 151
+
+   79 jump_stmt: RETURN SEMICOLON •
+
+    $default  reduce using rule 79 (jump_stmt)
+
+
+State 152
+
+   78 jump_stmt: RETURN Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 176
+
+
+State 153
+
+   68 Forstmt: FOR LPARENTHESIS • ForInit SEMICOLON ForCond SEMICOLON ForIncr RPARENTHESIS stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    $default  reduce using rule 70 (ForInit)
+
+    ForInit       go to state 177
+    Expr          go to state 178
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 154
+
+   13 FuncDecl: BType IDENT • LPARENTHESIS FuncParams RPARENTHESIS SEMICOLON
+   16         | BType IDENT • LPARENTHESIS RPARENTHESIS SEMICOLON
+   32 VarDef: IDENT • ConstList
+   33       | IDENT • ConstList ASSIGN InitVal
+
+    LPARENTHESIS  shift, and go to state 179
+
+    $default  reduce using rule 21 (ConstList)
+
+    ConstList  go to state 32
+
+
+State 155
+
+   62 stmt: Expr SEMICOLON •
+
+    $default  reduce using rule 62 (stmt)
+
+
+State 156
+
+   58 stmt: LVal ADASS • Expr SEMICOLON
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 180
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 157
+
+   59 stmt: LVal SUASS • Expr SEMICOLON
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 181
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 158
+
+   60 stmt: LVal MUASS • Expr SEMICOLON
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 182
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 159
+
+   61 stmt: LVal DIASS • Expr SEMICOLON
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 183
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 160
+
+   57 stmt: LVal ASSIGN • Expr SEMICOLON
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 184
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 161
+
+   49 FuncParam: BType IDENT LBRACKET RBRACKET ExpList •
+   51 ExpList: ExpList • LBRACKET Expr RBRACKET
+
+    LBRACKET  shift, and go to state 138
+
+    $default  reduce using rule 49 (FuncParam)
+
+
+State 162
+
+   24 ConstInit: LBRACE ConstInitList RBRACE •
+
+    $default  reduce using rule 24 (ConstInit)
+
+
+State 163
+
+   27 ConstInitList: ConstInitList COMMA • ConstInit
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 91
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    ConstInit     go to state 185
+    ConstExp      go to state 93
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 78
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 164
+
+   95 Func_Expr: IDENT LPARENTHESIS FuncRParams RPARENTHESIS •
+
+    $default  reduce using rule 95 (Func_Expr)
+
+
+State 165
+
+   98 FuncRParams: FuncRParams COMMA • Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Expr          go to state 186
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 166
+
+   51 ExpList: ExpList LBRACKET Expr • RBRACKET
+
+    RBRACKET  shift, and go to state 187
+
+
+State 167
+
+   38 InitValList: InitValList COMMA InitVal •
+
+    $default  reduce using rule 38 (InitValList)
+
+
+State 168
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS • FuncParams RPARENTHESIS SEMICOLON
+   15         | VOID IDENT LPARENTHESIS • RPARENTHESIS SEMICOLON
+
+    RPARENTHESIS  shift, and go to state 188
+    INT           shift, and go to state 17
+    FLOAT         shift, and go to state 2
+    VOID          shift, and go to state 38
+
+    BType       go to state 39
+    FuncParams  go to state 189
+    FuncParam   go to state 41
+
+
+State 169
+
+   75 IFItem: IF LPARENTHESIS Cond • RPARENTHESIS stmt
+   76       | IF LPARENTHESIS Cond • RPARENTHESIS stmt ELSE stmt
+
+    RPARENTHESIS  shift, and go to state 190
+
+
+State 170
+
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+  106 Rel_Expr: Add_Expr •
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 106 (Rel_Expr)
+
+
+State 171
+
+  107 Rel_Expr: Rel_Expr • LT Add_Expr
+  108         | Rel_Expr • LET Add_Expr
+  109         | Rel_Expr • GT Add_Expr
+  110         | Rel_Expr • GET Add_Expr
+  111 Eq_Expr: Rel_Expr •
+
+    LT   shift, and go to state 191
+    LET  shift, and go to state 192
+    GT   shift, and go to state 193
+    GET  shift, and go to state 194
+
+    $default  reduce using rule 111 (Eq_Expr)
+
+
+State 172
+
+  112 Eq_Expr: Eq_Expr • EQ Rel_Expr
+  113        | Eq_Expr • NEQ Rel_Expr
+  114 And_expr: Eq_Expr •
+
+    EQ   shift, and go to state 195
+    NEQ  shift, and go to state 196
+
+    $default  reduce using rule 114 (And_expr)
+
+
+State 173
+
+  115 And_expr: And_expr • AND Eq_Expr
+  116 OR_Expr: And_expr •
+
+    AND  shift, and go to state 197
+
+    $default  reduce using rule 116 (OR_Expr)
+
+
+State 174
+
+   83 Cond: OR_Expr •
+  117 OR_Expr: OR_Expr • OR And_expr
+
+    OR  shift, and go to state 198
+
+    $default  reduce using rule 83 (Cond)
+
+
+State 175
+
+   77 WhileItem: WHILE LPARENTHESIS Cond • RPARENTHESIS stmt
+
+    RPARENTHESIS  shift, and go to state 199
+
+
+State 176
+
+   78 jump_stmt: RETURN Expr SEMICOLON •
+
+    $default  reduce using rule 78 (jump_stmt)
+
+
+State 177
+
+   68 Forstmt: FOR LPARENTHESIS ForInit • SEMICOLON ForCond SEMICOLON ForIncr RPARENTHESIS stmt
+
+    SEMICOLON  shift, and go to state 200
+
+
+State 178
+
+   69 ForInit: Expr •
+
+    $default  reduce using rule 69 (ForInit)
+
+
+State 179
+
+   13 FuncDecl: BType IDENT LPARENTHESIS • FuncParams RPARENTHESIS SEMICOLON
+   16         | BType IDENT LPARENTHESIS • RPARENTHESIS SEMICOLON
+
+    RPARENTHESIS  shift, and go to state 201
+    INT           shift, and go to state 17
+    FLOAT         shift, and go to state 2
+    VOID          shift, and go to state 38
+
+    BType       go to state 39
+    FuncParams  go to state 202
+    FuncParam   go to state 41
+
+
+State 180
+
+   58 stmt: LVal ADASS Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 203
+
+
+State 181
+
+   59 stmt: LVal SUASS Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 204
+
+
+State 182
+
+   60 stmt: LVal MUASS Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 205
+
+
+State 183
+
+   61 stmt: LVal DIASS Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 206
+
+
+State 184
+
+   57 stmt: LVal ASSIGN Expr • SEMICOLON
+
+    SEMICOLON  shift, and go to state 207
+
+
+State 185
+
+   27 ConstInitList: ConstInitList COMMA ConstInit •
+
+    $default  reduce using rule 27 (ConstInitList)
+
+
+State 186
+
+   98 FuncRParams: FuncRParams COMMA Expr •
+
+    $default  reduce using rule 98 (FuncRParams)
+
+
+State 187
+
+   51 ExpList: ExpList LBRACKET Expr RBRACKET •
+
+    $default  reduce using rule 51 (ExpList)
+
+
+State 188
+
+   15 FuncDecl: VOID IDENT LPARENTHESIS RPARENTHESIS • SEMICOLON
+
+    SEMICOLON  shift, and go to state 54
+
+
+State 189
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS FuncParams • RPARENTHESIS SEMICOLON
+   46 FuncParams: FuncParams • COMMA FuncParam
+
+    RPARENTHESIS  shift, and go to state 208
+    COMMA         shift, and go to state 58
+
+
+State 190
+
+   75 IFItem: IF LPARENTHESIS Cond RPARENTHESIS • stmt
+   76       | IF LPARENTHESIS Cond RPARENTHESIS • stmt ELSE stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 51
+    NOT           shift, and go to state 67
+    IF            shift, and go to state 113
+    WHILE         shift, and go to state 114
+    BREAK         shift, and go to state 115
+    CONTINUE      shift, and go to state 116
+    RETURN        shift, and go to state 117
+    FOR           shift, and go to state 118
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Body          go to state 121
+    stmt          go to state 209
+    Forstmt       go to state 124
+    IFItem        go to state 125
+    WhileItem     go to state 126
+    jump_stmt     go to state 127
+    Expr          go to state 128
+    LVal          go to state 129
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 191
+
+  107 Rel_Expr: Rel_Expr LT • Add_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 210
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 192
+
+  108 Rel_Expr: Rel_Expr LET • Add_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 211
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 193
+
+  109 Rel_Expr: Rel_Expr GT • Add_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 212
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 194
+
+  110 Rel_Expr: Rel_Expr GET • Add_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 213
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 195
+
+  112 Eq_Expr: Eq_Expr EQ • Rel_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 214
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 196
+
+  113 Eq_Expr: Eq_Expr NEQ • Rel_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 215
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 197
+
+  115 And_expr: And_expr AND • Eq_Expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 171
+    Eq_Expr       go to state 216
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 198
+
+  117 OR_Expr: OR_Expr OR • And_expr
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 171
+    Eq_Expr       go to state 172
+    And_expr      go to state 217
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 199
+
+   77 WhileItem: WHILE LPARENTHESIS Cond RPARENTHESIS • stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 51
+    NOT           shift, and go to state 67
+    IF            shift, and go to state 113
+    WHILE         shift, and go to state 114
+    BREAK         shift, and go to state 115
+    CONTINUE      shift, and go to state 116
+    RETURN        shift, and go to state 117
+    FOR           shift, and go to state 118
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Body          go to state 121
+    stmt          go to state 218
+    Forstmt       go to state 124
+    IFItem        go to state 125
+    WhileItem     go to state 126
+    jump_stmt     go to state 127
+    Expr          go to state 128
+    LVal          go to state 129
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 200
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON • ForCond SEMICOLON ForIncr RPARENTHESIS stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    $default  reduce using rule 72 (ForCond)
+
+    ForCond       go to state 219
+    Cond          go to state 220
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 170
+    Rel_Expr      go to state 171
+    Eq_Expr       go to state 172
+    And_expr      go to state 173
+    OR_Expr       go to state 174
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 201
+
+   16 FuncDecl: BType IDENT LPARENTHESIS RPARENTHESIS • SEMICOLON
+
+    SEMICOLON  shift, and go to state 61
+
+
+State 202
+
+   13 FuncDecl: BType IDENT LPARENTHESIS FuncParams • RPARENTHESIS SEMICOLON
+   46 FuncParams: FuncParams • COMMA FuncParam
+
+    RPARENTHESIS  shift, and go to state 221
+    COMMA         shift, and go to state 58
+
+
+State 203
+
+   58 stmt: LVal ADASS Expr SEMICOLON •
+
+    $default  reduce using rule 58 (stmt)
+
+
+State 204
+
+   59 stmt: LVal SUASS Expr SEMICOLON •
+
+    $default  reduce using rule 59 (stmt)
+
+
+State 205
+
+   60 stmt: LVal MUASS Expr SEMICOLON •
+
+    $default  reduce using rule 60 (stmt)
+
+
+State 206
+
+   61 stmt: LVal DIASS Expr SEMICOLON •
+
+    $default  reduce using rule 61 (stmt)
+
+
+State 207
+
+   57 stmt: LVal ASSIGN Expr SEMICOLON •
+
+    $default  reduce using rule 57 (stmt)
+
+
+State 208
+
+   14 FuncDecl: VOID IDENT LPARENTHESIS FuncParams RPARENTHESIS • SEMICOLON
+
+    SEMICOLON  shift, and go to state 88
+
+
+State 209
+
+   75 IFItem: IF LPARENTHESIS Cond RPARENTHESIS stmt •
+   76       | IF LPARENTHESIS Cond RPARENTHESIS stmt • ELSE stmt
+
+    ELSE  shift, and go to state 222
+
+    $default  reduce using rule 75 (IFItem)
+
+
+State 210
+
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+  107 Rel_Expr: Rel_Expr LT Add_Expr •
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 107 (Rel_Expr)
+
+
+State 211
+
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+  108 Rel_Expr: Rel_Expr LET Add_Expr •
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 108 (Rel_Expr)
+
+
+State 212
+
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+  109 Rel_Expr: Rel_Expr GT Add_Expr •
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 109 (Rel_Expr)
+
+
+State 213
+
+  104 Add_Expr: Add_Expr • ADD MDM_Expr
+  105         | Add_Expr • SUB MDM_Expr
+  110 Rel_Expr: Rel_Expr GET Add_Expr •
+
+    ADD  shift, and go to state 106
+    SUB  shift, and go to state 107
+
+    $default  reduce using rule 110 (Rel_Expr)
+
+
+State 214
+
+  107 Rel_Expr: Rel_Expr • LT Add_Expr
+  108         | Rel_Expr • LET Add_Expr
+  109         | Rel_Expr • GT Add_Expr
+  110         | Rel_Expr • GET Add_Expr
+  112 Eq_Expr: Eq_Expr EQ Rel_Expr •
+
+    LT   shift, and go to state 191
+    LET  shift, and go to state 192
+    GT   shift, and go to state 193
+    GET  shift, and go to state 194
+
+    $default  reduce using rule 112 (Eq_Expr)
+
+
+State 215
+
+  107 Rel_Expr: Rel_Expr • LT Add_Expr
+  108         | Rel_Expr • LET Add_Expr
+  109         | Rel_Expr • GT Add_Expr
+  110         | Rel_Expr • GET Add_Expr
+  113 Eq_Expr: Eq_Expr NEQ Rel_Expr •
+
+    LT   shift, and go to state 191
+    LET  shift, and go to state 192
+    GT   shift, and go to state 193
+    GET  shift, and go to state 194
+
+    $default  reduce using rule 113 (Eq_Expr)
+
+
+State 216
+
+  112 Eq_Expr: Eq_Expr • EQ Rel_Expr
+  113        | Eq_Expr • NEQ Rel_Expr
+  115 And_expr: And_expr AND Eq_Expr •
+
+    EQ   shift, and go to state 195
+    NEQ  shift, and go to state 196
+
+    $default  reduce using rule 115 (And_expr)
+
+
+State 217
+
+  115 And_expr: And_expr • AND Eq_Expr
+  117 OR_Expr: OR_Expr OR And_expr •
+
+    AND  shift, and go to state 197
+
+    $default  reduce using rule 117 (OR_Expr)
+
+
+State 218
+
+   77 WhileItem: WHILE LPARENTHESIS Cond RPARENTHESIS stmt •
+
+    $default  reduce using rule 77 (WhileItem)
+
+
+State 219
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON ForCond • SEMICOLON ForIncr RPARENTHESIS stmt
+
+    SEMICOLON  shift, and go to state 223
+
+
+State 220
+
+   71 ForCond: Cond •
+
+    $default  reduce using rule 71 (ForCond)
+
+
+State 221
+
+   13 FuncDecl: BType IDENT LPARENTHESIS FuncParams RPARENTHESIS • SEMICOLON
+
+    SEMICOLON  shift, and go to state 94
+
+
+State 222
+
+   76 IFItem: IF LPARENTHESIS Cond RPARENTHESIS stmt ELSE • stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 51
+    NOT           shift, and go to state 67
+    IF            shift, and go to state 113
+    WHILE         shift, and go to state 114
+    BREAK         shift, and go to state 115
+    CONTINUE      shift, and go to state 116
+    RETURN        shift, and go to state 117
+    FOR           shift, and go to state 118
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Body          go to state 121
+    stmt          go to state 224
+    Forstmt       go to state 124
+    IFItem        go to state 125
+    WhileItem     go to state 126
+    jump_stmt     go to state 127
+    Expr          go to state 128
+    LVal          go to state 129
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 223
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON ForCond SEMICOLON • ForIncr RPARENTHESIS stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    NOT           shift, and go to state 67
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    $default  reduce using rule 74 (ForIncr)
+
+    ForIncr       go to state 225
+    Expr          go to state 226
+    LVal          go to state 72
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 224
+
+   76 IFItem: IF LPARENTHESIS Cond RPARENTHESIS stmt ELSE stmt •
+
+    $default  reduce using rule 76 (IFItem)
+
+
+State 225
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON ForCond SEMICOLON ForIncr • RPARENTHESIS stmt
+
+    RPARENTHESIS  shift, and go to state 227
+
+
+State 226
+
+   73 ForIncr: Expr •
+
+    $default  reduce using rule 73 (ForIncr)
+
+
+State 227
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON ForCond SEMICOLON ForIncr RPARENTHESIS • stmt
+
+    ADD           shift, and go to state 64
+    SUB           shift, and go to state 65
+    LPARENTHESIS  shift, and go to state 66
+    LBRACE        shift, and go to state 51
+    NOT           shift, and go to state 67
+    IF            shift, and go to state 113
+    WHILE         shift, and go to state 114
+    BREAK         shift, and go to state 115
+    CONTINUE      shift, and go to state 116
+    RETURN        shift, and go to state 117
+    FOR           shift, and go to state 118
+    IDENT         shift, and go to state 68
+    INTCONST      shift, and go to state 69
+    FLOATCONST    shift, and go to state 70
+
+    Body          go to state 121
+    stmt          go to state 228
+    Forstmt       go to state 124
+    IFItem        go to state 125
+    WhileItem     go to state 126
+    jump_stmt     go to state 127
+    Expr          go to state 128
+    LVal          go to state 129
+    Primary_Expr  go to state 73
+    Number        go to state 74
+    Unary_Expr    go to state 75
+    Func_Expr     go to state 76
+    MDM_Expr      go to state 77
+    Add_Expr      go to state 84
+    Integer       go to state 79
+    Floatnum      go to state 80
+
+
+State 228
+
+   68 Forstmt: FOR LPARENTHESIS ForInit SEMICOLON ForCond SEMICOLON ForIncr RPARENTHESIS stmt •
+
+    $default  reduce using rule 68 (Forstmt)
